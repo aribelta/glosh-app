@@ -24,6 +24,7 @@ class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //command
       appBar: CustomAppBar(title: "Page Title"),
       body: GetBuilder<ControllerHomePage>(
           init: _controllerhomepage,
