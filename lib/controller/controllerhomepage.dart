@@ -21,17 +21,4 @@ class ControllerHomePage extends GetxController {
       print("${e.toString()}");
     }
   }
-
-  getBookList() async {
-    print("tes");
-    try {
-      final resp = await _repositoryBook.findAllBook();
-      print("print response: ${resp}");
-      var responsedata = bookFromJson(resp?.data);
-      listBook.addAll(responsedata);
-      update();
-    } on DioError catch (e) {
-      print("${e.toString()}");
-    }
-  }
 }

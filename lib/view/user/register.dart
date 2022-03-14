@@ -134,9 +134,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
               SizedBox(height: 58),
               ButtonWidget(
                 title: "Sign Up",
-                onPressedButton: () {
-                  Get.toNamed("/myshop");
-                },
+                onPressedButton: () {},
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
