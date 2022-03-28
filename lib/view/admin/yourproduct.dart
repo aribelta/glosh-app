@@ -66,24 +66,26 @@ class _ProWidgetState extends State<ProWidget> {
 
   _onPressButton(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Wrap(children: [
-            ListTile(
-              title: Text(
-                'Menu',
-                style: GoogleFonts.workSans(
-                    textStyle:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
-              ),
+      context: context,
+      builder: (context) {
+        return Wrap(children: [
+          ListTile(
+            title: Text(
+              'Menu',
+              style: GoogleFonts.workSans(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
             ),
-            Divider(thickness: 1, color: Color(0xffEADDFF)),
-            ListTile(
-              onTap: () => Get.toNamed("/category"),
-              title: Text('Your Categories'),
-            ),
-          ]);
-        });
+          ),
+          Divider(thickness: 1, color: Color(0xffEADDFF)),
+          ListTile(
+            onTap: () => Get.toNamed("/category"),
+            title: Text('Your Categories'),
+          ),
+        ]);
+      },
+      barrierColor: Colors.transparent,
+    );
   }
 
   _productAddList(List<Product> item) {

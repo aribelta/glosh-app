@@ -1,6 +1,7 @@
-import 'package:bigproject/controller/controllerlogin.dart';
+import 'package:bigproject/controller/admin/controllerlogin.dart';
 import 'package:bigproject/model/button.dart';
 import 'package:bigproject/model/color.dart';
+import 'package:bigproject/routes/navigator.dart';
 import 'package:bigproject/view/user/mainhome.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,7 +21,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
 
-  bool pass = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,21 +79,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: TextFormField(
                         controller: _controllerPassword,
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: pass,
+                        obscureText: _controllerLogin.pass,
                         decoration: InputDecoration(
                             fillColor: birumuda,
                             labelText: "Password",
                             labelStyle: TextStyle(fontSize: 14),
                             suffixIcon: InkWell(
-                                onTap: () {
-                                  if (pass == true) {
-                                    pass = false;
-                                  } else {
-                                    pass = true;
-                                  }
-                                  setState(() {});
-                                },
-                                child: pass == true
+                                onTap: () => _controllerLogin
+                                    .obscurePassword(_controllerLogin.pass),
+                                child: _controllerLogin.pass
                                     ? Icon(Icons.remove_red_eye_sharp)
                                     : Icon(Icons.visibility_off)),
                             counterText: "Forgot your password?",
@@ -102,29 +96,72 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 decoration: TextDecoration.underline)),
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: InkWell(
+                              onTap: () => _controllerLogin
+                                  .changesCheckbox(_controllerLogin.checkBox),
+                              child: _controllerLogin.checkBox
+                                  ? Icon(Icons.check_box_outlined)
+                                  : Icon(Icons.check_box_outline_blank)),
+                        ),
+                        Text("Masuk Sebagai Admin ?")
+                      ],
+                    ),
                     SizedBox(height: 170),
                     ButtonWidget(
                         title: "Login",
                         onPressedButton: () async {
                           print("email :${_controllerEmail.text}");
                           print(" pass :${_controllerPassword.text}");
-                          final response = await _controllerLogin.postLogin(
-                            email: _controllerEmail.text,
-                            password: _controllerPassword.text,
-                          );
-                          if (response != null) {
-                            if (response.user?.role == "member") {
-                              Get.offNamed("/home");
-                            } else if (response.user?.role == "admin") {
-                              Get.toNamed("/myshop");
+
+                          if (!_controllerLogin.checkBox) {
+                            final response =
+                                await _controllerLogin.postLoginCustomer(
+                              email: _controllerEmail.text,
+                              password: _controllerPassword.text,
+                            );
+                            if (response != null) {
+                              _controllerLogin
+                                  .setAllSharedPreferencesCustomer(response);
+
+                              Get.offNamed(Navi.home);
                             } else {
                               Fluttertoast.showToast(
                                   msg: "Email atau Password Salah");
                             }
                           } else {
-                            Fluttertoast.showToast(
-                                msg: "Terjadi Masalah pada Koneksi");
+                            final response = await _controllerLogin.postLogin(
+                              email: _controllerEmail.text,
+                              password: _controllerPassword.text,
+                            );
+                            if (response != null) {
+                              _controllerLogin
+                                  .setAllSharedPreferences(response);
+                              Get.offAllNamed(Navi.myshop);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Email atau Password Salah");
+                            }
                           }
+                          // if (response != null) {
+                          //   if (response.user?.role == "member" &&
+                          //       checkBox == false) {
+                          //     Get.offNamed(Navi.home);
+                          //   } else if (response.user?.role == "member" &&
+                          //       checkBox == true) {
+                          //     Get.toNamed(Navi.myshop);
+                          //   } else {
+                          //     Fluttertoast.showToast(
+                          //         msg: "Email atau Password Salah");
+                          //   }
+                          // } else {
+                          //   Fluttertoast.showToast(
+                          //       msg: "Terjadi Masalah pada Koneksi");
+                          // }
                           // Get.offNamed("/home");
                           // Navigator.pushReplacementNamed(context, "/home");
                         }),
@@ -138,7 +175,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ),
                         InkWell(
                           onTap: () {
-                            Get.toNamed("/register");
+                            Get.toNamed(Navi.register);
                             // Navigator.pushNamed(context, "/register");
                           },
                           child: Padding(

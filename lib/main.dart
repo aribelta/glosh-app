@@ -1,3 +1,4 @@
+import 'package:bigproject/routes/navigator.dart';
 import 'package:bigproject/view/admin/categories.dart';
 import 'package:bigproject/view/admin/myshop.dart';
 import 'package:bigproject/view/admin/yourproduct.dart';
@@ -20,31 +21,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       getPages: [
         GetPage(
-          name: "/",
+          name: Navi.getStarted,
           page: () => GetStartedWidget(),
         ),
         GetPage(
-            name: "/login",
+            name: Navi.login,
             page: () => LoginWidget(),
             transition: Transition.upToDown,
             transitionDuration: Duration(seconds: 1)),
         GetPage(
-          name: "/register",
+          name: Navi.register,
           page: () => RegisterWidget(),
         ),
         GetPage(
-          name: "/home",
+          name: Navi.home,
           page: () => HomeWidget(),
         ),
         GetPage(
-          name: "/checkout",
+          name: Navi.checkout,
           page: () => CheckoutWidget(),
         ),
-        GetPage(name: "/myshop", page: () => MyShopWidget()),
-        GetPage(name: "/product", page: () => ProWidget()),
-        GetPage(name: "/category", page: () => CategoriesWidget())
+        GetPage(name: Navi.myshop, page: () => MyShopWidget()),
+        GetPage(name: Navi.product, page: () => ProWidget()),
+        GetPage(name: Navi.category, page: () => CategoriesWidget())
       ],
       defaultTransition: Transition.noTransition,
     );

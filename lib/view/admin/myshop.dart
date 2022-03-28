@@ -1,6 +1,9 @@
-import 'package:bigproject/controller/controllermyshop.dart';
+import 'package:bigproject/controller/admin/controllermyshop.dart';
 import 'package:bigproject/model/color.dart';
 import 'package:bigproject/model/detail.dart';
+import 'package:bigproject/modeljson/admin/get/listgetproduct.dart' as prefix;
+import 'package:bigproject/routes/navigator.dart';
+import 'package:bigproject/utilities/sharedpreferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +29,10 @@ class _MyShopWidgetState extends State<MyShopWidget> {
       ),
       body: GetBuilder<ControllerMyShop>(
           init: _controllermyshop,
+          initState: (state) {
+            _controllermyshop.getStoreName();
+            _controllermyshop.getProduct();
+          },
           builder: (ControllerMyShop c) {
             return ListView(
               scrollDirection: Axis.vertical,
@@ -50,7 +57,7 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                               children: [
                                 Row(
                                   children: [
-                                    Text("${c.namaToko}",
+                                    Text("${c.storeName.store?.name}",
                                         style: GoogleFonts.workSans(
                                             textStyle: TextStyle(
                                                 fontWeight: FontWeight.w700,
@@ -62,34 +69,34 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                                     )
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.stars_outlined,
-                                      color: namatoko,
-                                    ),
-                                    Text("${c.jumlahFollowers} Followers",
-                                        style: GoogleFonts.workSans(
-                                            textStyle: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                        )))
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.insights_outlined,
-                                      color: namatoko,
-                                    ),
-                                    Text("${c.jumlahVisit} Visits a day",
-                                        style: GoogleFonts.workSans(
-                                            textStyle: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                        )))
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     Icon(
+                                //       Icons.stars_outlined,
+                                //       color: namatoko,
+                                //     ),
+                                //     Text("${c.jumlahFollowers} Followers",
+                                //         style: GoogleFonts.workSans(
+                                //             textStyle: TextStyle(
+                                //           fontWeight: FontWeight.w400,
+                                //           fontSize: 13,
+                                //         )))
+                                //   ],
+                                // ),
+                                // Row(
+                                //   children: [
+                                //     Icon(
+                                //       Icons.insights_outlined,
+                                //       color: namatoko,
+                                //     ),
+                                //     Text("${c.jumlahVisit} Visits a day",
+                                //         style: GoogleFonts.workSans(
+                                //             textStyle: TextStyle(
+                                //           fontWeight: FontWeight.w400,
+                                //           fontSize: 13,
+                                //         )))
+                                //   ],
+                                // ),
                               ],
                             ),
                           ],
@@ -144,7 +151,11 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                                 height: 100,
                                 width: 120,
                                 child: OutlinedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      SharedPreferencesUtils
+                                          .deleteCredentials();
+                                      Get.offNamed(Navi.login);
+                                    },
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -284,14 +295,16 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                                 ),
                               ),
                               SizedBox(width: 8),
-                              Wrap(
-                                  runSpacing: 10,
-                                  spacing: 20,
-                                  alignment: WrapAlignment.center,
-                                  children: [
-                                    for (var item in c.listProduct)
-                                      _cartItem(item)
-                                  ])
+                              if (_controllermyshop.listProduct.isNotEmpty)
+                                Wrap(
+                                    runSpacing: 10,
+                                    spacing: 20,
+                                    alignment: WrapAlignment.center,
+                                    children: [
+                                      for (var item
+                                          in _controllermyshop.listProduct)
+                                        _cartItem(item)
+                                    ])
                             ],
                           ),
                         )
@@ -365,7 +378,7 @@ class _MyShopWidgetState extends State<MyShopWidget> {
     ]);
   }
 
-  Widget _cartItem(Product _items) {
+  Widget _cartItem(prefix.Product _items) {
     return Container(
         width: MediaQuery.of(context).size.width / 2.5,
         height: 258,
@@ -384,7 +397,10 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 48),
-                  child: Image.asset(_items.image),
+                  child: Image.network(
+                    _items.thumbnail ?? " ",
+                    scale: 2,
+                  ),
                 )),
             SizedBox(height: 37),
             Padding(
@@ -398,8 +414,9 @@ class _MyShopWidgetState extends State<MyShopWidget> {
             Padding(
               padding: const EdgeInsets.only(
                   top: 6, bottom: 16, right: 15, left: 15),
-              child: Text("${_items.subtitle}",
+              child: Text("${_items.description}",
                   style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
                       color: birumuda)),
@@ -409,7 +426,7 @@ class _MyShopWidgetState extends State<MyShopWidget> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text("${_items.price}",
+                  child: Text("${_items.weight}",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

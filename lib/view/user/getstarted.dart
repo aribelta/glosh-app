@@ -1,4 +1,6 @@
 import 'package:bigproject/model/button.dart';
+import 'package:bigproject/routes/navigator.dart';
+import 'package:bigproject/utilities/sharedpreferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +15,13 @@ class GetStartedWidget extends StatefulWidget {
 }
 
 class _GetStartedWidgetState extends State<GetStartedWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    getPreferences();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +66,7 @@ class _GetStartedWidgetState extends State<GetStartedWidget> {
             child: ButtonWidget(
               title: "Get Started",
               onPressedButton: () {
-                Get.offNamed("/login");
+                Get.offNamed(Navi.login);
                 // Navigator.pushReplacementNamed(context, "/login");
               },
             ),
@@ -86,5 +95,18 @@ class _GetStartedWidgetState extends State<GetStartedWidget> {
         ],
       ),
     );
+  }
+
+  Future<void> getPreferences() async {
+    var id = await SharedPreferencesUtils.getId();
+    var login = await SharedPreferencesUtils.getLogin();
+    var role = await SharedPreferencesUtils.getRole();
+    if (login == true) {
+      if (role == "member") {
+        Get.toNamed(Navi.myshop);
+      } else if (role == "client") {
+        Get.toNamed(Navi.home);
+      }
+    }
   }
 }
