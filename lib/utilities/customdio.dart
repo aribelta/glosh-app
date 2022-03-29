@@ -7,7 +7,7 @@ class CustomDio {
     dio.options.baseUrl = 'http://mobileapi.cilsy.id:9000';
     dio.options.headers = {
       "Cookie":
-          "connect.sid=s%3AQhFK9yuOkloo7rfNGUeeAH4bK-Lf9SYT.WBE4s2vpgMYd43Q7LMVrLkkNKDN6okV8fqtLawC5JoE"
+          "connect.sid=s%3A1jl6h3r7aMBdUD0uU0NMn7svFCAeaPwv.dhzwdoGf8Q4C5YknvLRf3gKkwhpKJaG107cNTbUrWfs"
     };
     return dio;
   }

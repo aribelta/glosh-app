@@ -5,6 +5,7 @@ import 'package:bigproject/modeljson/admin/get/listgetproduct.dart' as prefix;
 import 'package:bigproject/routes/navigator.dart';
 import 'package:bigproject/utilities/sharedpreferences.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -50,6 +51,7 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
+                                backgroundColor: Colors.white,
                                 maxRadius: 40,
                                 backgroundImage:
                                     AssetImage("images/apple.png")),
@@ -392,19 +394,23 @@ class _MyShopWidgetState extends State<MyShopWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-                height: 141,
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 48),
-                  child: Image.network(
-                    _items.thumbnail ?? " ",
-                    scale: 2,
-                  ),
-                )),
-            SizedBox(height: 37),
+            Expanded(
+              child: SizedBox(
+                  height: 141,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: Image.network(
+                      _items.thumbnail ?? " ",
+                      scale: 3,
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+            ),
+            SizedBox(height: 25),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
               child: Text("${_items.title}",
                   style: TextStyle(
                       fontSize: 14,
@@ -413,10 +419,11 @@ class _MyShopWidgetState extends State<MyShopWidget> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 6, bottom: 16, right: 15, left: 15),
+                  top: 6, bottom: 25, right: 15, left: 15),
               child: Text("${_items.description}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                   style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
                       color: birumuda)),
@@ -432,6 +439,24 @@ class _MyShopWidgetState extends State<MyShopWidget> {
                           fontWeight: FontWeight.w500,
                           color: Colors.black)),
                 ),
+                GestureDetector(
+                  onTap: () => Fluttertoast.showToast(
+                      msg: "x item has been added to cart",
+                      gravity: ToastGravity.TOP,
+                      toastLength: Toast.LENGTH_LONG,
+                      backgroundColor: checkoutbiru),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8, right: 12),
+                    child: Container(
+                      height: 38,
+                      width: 51,
+                      decoration: BoxDecoration(
+                          color: button,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Icon(Icons.add, color: Colors.white),
+                    ),
+                  ),
+                )
               ],
             )
           ],

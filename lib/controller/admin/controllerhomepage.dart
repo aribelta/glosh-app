@@ -12,7 +12,7 @@ class ControllerHomePage extends GetxController {
   final _productAdmin = RepositoryProduct();
 
   Future<void> getProduct() async {
-    final dataAdmin = await _productAdmin.custProduct();
+    final dataAdmin = await _productAdmin.product();
     print("data admin register => ${dataAdmin}");
     if (dataAdmin != null) {
       final userData = ProductType.fromJson(dataAdmin.data);

@@ -1,5 +1,5 @@
 import 'package:bigproject/modeljson/admin/post/modelusers.dart';
-import 'package:bigproject/modeljson/client/modelcustomer.dart';
+import 'package:bigproject/modeljson/client/post/modelcustomer.dart';
 import 'package:bigproject/repository/admin/repositoryadmin.dart';
 import 'package:bigproject/repository/user/customerauth.dart';
 import 'package:bigproject/utilities/sharedpreferences.dart';
