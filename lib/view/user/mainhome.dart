@@ -1,9 +1,9 @@
-import 'package:bigproject/controller/controllerhomepage.dart';
+import 'package:bigproject/controller/admin/controllerhomepage.dart';
 import 'package:bigproject/model/address.dart';
 import 'package:bigproject/model/color.dart';
 import 'package:bigproject/model/component/appbar.dart';
-import 'package:bigproject/model/detail.dart';
 import 'package:bigproject/model/grid.dart';
+import 'package:bigproject/modeljson/admin/get/listgetproduct.dart' as prefix;
 import 'package:bigproject/modeljson/models.dart';
 import 'package:bigproject/view/user/carousel.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +24,13 @@ class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //command
-      //commanddarigithub
       appBar: CustomAppBar(title: "Page Title"),
       body: GetBuilder<ControllerHomePage>(
           init: _controllerhomepage,
           initState: (state) {
             print("sebelum get");
             _controllerhomepage.getBook();
+            _controllerhomepage.getProduct();
             print("sesudah get");
           },
           builder: (ControllerHomePage c) {
@@ -99,7 +98,8 @@ class _MainHomeState extends State<MainHome> {
                               runSpacing: 10,
                               spacing: 16,
                               children: [
-                                for (var item in _controllerhomepage.listBook)
+                                for (var item
+                                    in _controllerhomepage.listProduct)
                                   _cartItem(item),
                               ],
                             ),
@@ -107,6 +107,9 @@ class _MainHomeState extends State<MainHome> {
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 5,
                   )
                 ],
               ),
@@ -115,7 +118,7 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 
-  Widget _cartItem(Book _items) {
+  Widget _cartItem(prefix.Product _items) {
     return Container(
         width: MediaQuery.of(context).size.width / 2.5,
         height: 300,
@@ -129,13 +132,18 @@ class _MainHomeState extends State<MainHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-                height: 141,
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 48),
-                  child: Image.network(_items.imageUrl ?? " "),
-                )),
+            Expanded(
+              child: SizedBox(
+                  height: 141,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Image.network(
+                      _items.thumbnail ?? " ",
+                      scale: 3,
+                    ),
+                  )),
+            ),
             SizedBox(height: 37),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -148,18 +156,19 @@ class _MainHomeState extends State<MainHome> {
             Padding(
               padding: const EdgeInsets.only(
                   top: 6, bottom: 16, right: 15, left: 15),
-              child: Text("${_items.bookCategory?.name}",
+              child: Text("${_items.description}",
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: birumuda)),
+                      color: birumuda,
+                      overflow: TextOverflow.ellipsis)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text("${_items.price}",
+                  child: Text("${_items.weight}",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

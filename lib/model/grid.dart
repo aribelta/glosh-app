@@ -1,6 +1,9 @@
 import 'package:bigproject/model/color.dart';
+import 'package:bigproject/routes/navigator.dart';
+import 'package:bigproject/utilities/sharedpreferences.dart';
 import 'package:bigproject/view/user/product.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class GridWidget extends StatelessWidget {
   const GridWidget({Key? key}) : super(key: key);
@@ -39,10 +42,13 @@ class GridWidget extends StatelessWidget {
 
   Widget _itemMenu(String title, String subtitle, BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (title == "Fresh") {
           Navigator.push(
               context, MaterialPageRoute(builder: (_) => ProductWidget()));
+        } else if (title == "Dairy") {
+          await SharedPreferencesUtils.deleteCredentials();
+          Get.offNamed(Navi.login);
         }
       },
       child: Container(

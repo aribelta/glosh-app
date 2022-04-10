@@ -1,6 +1,7 @@
 import 'package:bigproject/model/button.dart';
 import 'package:bigproject/model/color.dart';
 import 'package:bigproject/model/detail.dart';
+import 'package:bigproject/routes/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -210,10 +211,10 @@ class _CartWidgetState extends State<CartWidget> {
                                                         ),
                                                       ),
                                                       Container(
-                                                        child: Padding(
+                                                        child: const Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(2.5),
+                                                              EdgeInsets.all(
+                                                                  2.5),
                                                           child: Icon(
                                                             Icons.add,
                                                             color: Colors.white,
@@ -317,7 +318,7 @@ class _CartWidgetState extends State<CartWidget> {
           child: ButtonWidget(
               title: "Checkout",
               onPressedButton: () {
-                Get.toNamed("/checkout");
+                Get.toNamed(Navi.checkout);
                 // Navigator.pushNamed(context, "/checkout");
               }),
         )
