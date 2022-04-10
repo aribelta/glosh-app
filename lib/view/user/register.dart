@@ -96,7 +96,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         obscureText: pass,
                         decoration: InputDecoration(
                           labelText: "Password",
-                          labelStyle: TextStyle(fontSize: 10),
+                          labelStyle: TextStyle(fontSize: 14),
                           suffixIcon: InkWell(
                               onTap: () {
                                 if (pass == true) {

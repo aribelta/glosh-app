@@ -15,6 +15,8 @@ class CategoriesWidget extends StatefulWidget {
 
 class _CategoriesWidgetState extends State<CategoriesWidget> {
   var _controllercategories = Get.put(ControllerCategories());
+
+  TextEditingController _controllerTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +72,10 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 28),
                   child: ButtonWidget(
-                      title: "Add Category", onPressedButton: () {}),
+                      title: "Add Category",
+                      onPressedButton: () {
+                        _addCategory();
+                      }),
                 ),
                 for (var i in _controllercategories.listCollection)
                   Expanded(child: _categoryCard(i)),
@@ -78,6 +83,32 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
             );
           }),
     );
+  }
+
+  _addCategory() {
+    return Stack(children: [
+      Positioned.fill(
+          child: Container(
+        height: Get.height,
+        width: Get.width,
+        color: Color.fromARGB(66, 43, 43, 43),
+      )),
+      Container(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _controllerTitle,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.comment),
+                    hintText: "Title",
+                    labelText: "Title"),
+              ),
+              TextButton(onPressed: () {}, child: Text("Insert"))
+            ]),
+      ),
+    ]);
   }
 
   Widget _categoryCard(Collection _items) {

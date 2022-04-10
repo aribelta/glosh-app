@@ -1,4 +1,4 @@
-import 'package:bigproject/modeljson/admin/get/getnamatoko.dart';
+import 'package:bigproject/modeljson/admin/get/getstorename.dart';
 import 'package:bigproject/modeljson/admin/get/listgetproduct.dart';
 import 'package:bigproject/modeljson/models.dart' as prefix;
 import 'package:bigproject/repository/admin/repositorygetstoredetails.dart';
